@@ -21,12 +21,14 @@ This implements the Pascal's triangle.
 #         outerArr.append(innerArr)
 #     return outerArr
 
+
 def calculate_factorial(num):
     """Calculate the factorial of a number."""
     result = 1
     for i in range(1, num + 1):
         result *= i
     return result
+
 
 def pascal_triangle(n):
     """Generate Pascal's triangle up to the nth row."""
