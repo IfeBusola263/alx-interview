@@ -1,6 +1,6 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """
-This module implements the Pascal's triangle
+This implements the Pascal's triangle.
 """
 from math import factorial
 
