@@ -1,10 +1,14 @@
 #!/usr/bin/python3
-"""This module implements the Pascal's triangle"""
+"""
+This module implements the Pascal's triangle
+"""
 from math import factorial
 
 
 def pascal_triangle(n):
-    """The Pascal's triangle implementation """
+    """
+    The Pascal's triangle implementation.
+    """
 
     if n <= 0:
         return []
