@@ -36,15 +36,18 @@ try:
     for line in sys.stdin:
         line_tup = line.split(" ")
         if len(line_tup) == 9:
-            status_code = line_tup[7]
-            fs = line_tup[8][:-1]
-            file_size = int(fs)
-            if status_code in counter_dict.keys():
-                counter_dict[status_code] = counter_dict.get(status_code) + 1
+            try:
+                status_code = line_tup[7]
+                fs = line_tup[8][:-1]
+                file_size = int(fs)
+                if status_code in counter_dict.keys():
+                    counter_dict[status_code] = counter_dict.get(status_code) + 1
                 total_size += file_size
                 counter += 1
-                if counter == 10:
-                    printer(counter_dict, total_size)
-                    counter = 0
+            except (IndexError, ValueError, TypeError):
+                continue
+        if counter == 10:
+            printer(counter_dict, total_size)
+            counter = 0
 except KeyboardInterrupt:
     printer(counter_dict, total_size)
