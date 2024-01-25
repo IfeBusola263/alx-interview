@@ -41,7 +41,8 @@ try:
                 fs = line_tup[8][:-1]
                 file_size = int(fs)
                 if status_code in counter_dict.keys():
-                    counter_dict[status_code] = counter_dict.get(status_code) + 1
+                    counter_dict[status_code] = counter_dict.get(
+                        status_code) + 1
                 total_size += file_size
                 counter += 1
             except (IndexError, ValueError, TypeError):
