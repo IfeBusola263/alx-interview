@@ -1,71 +1,81 @@
 #!/usr/bin/python3
-'''
-This module parses log information
-and prints it.
-'''
+""" Script that reads stdin line by line and computes metrics
 
+    Input format:
+        <IP Address> - [<date>] "GET /projects/260 HTTP/1.1"
+            <status code> <file size>
+        (if the format is not this one, the line must be skipped)
+
+    format: <status code>: <number>
+"""
 import sys
 import re
 
 
-def process_line(line, metrics):
-    # Define the regex pattern for extracting relevant information
-    pattern = re.compile(r'(\d+\.\d+\.\d+\.\d+) - \[.*\] "GET /projects/260 HTTP/1\.1" (\d+) (\d+)')
-    match = pattern.match(line)
-
-    if match:
-        ip_address, status_code, file_size = match.groups()
-        # print(ip_address)
-        # print(status_code)
-        # print(file_size)
-        metrics['total_size'] += int(file_size)
-
-        if status_code in metrics['status_codes']:
-            metrics['status_codes'][status_code] += 1
+def print_status(total_size, status_codes):
+    """ Print Status Function """
+    print(f"File size: {total_size}")
+    for code, count in status_codes.items():
+        if count > 0:
+            print(f"{code}: {count}")
 
 
-def print_metrics(metrics):
-    '''
-    Print out the metrics for the info collected
-    on each successful parse.
-    '''
-    print(f"File size: {metrics['total_size']}")
-    # print(metrics)
-    # Print number of lines by status code in ascending order
-    for status_code in sorted(metrics['status_codes']):
-        if metrics['status_codes'][status_code] > 0:
-            print(f"{status_code}: {metrics['status_codes'][status_code]}")
+def match_input(input_line):
+    """ Check if input line match """
+    data = {'status_code': 0, 'file_size': 0}
+
+    pattern = re.compile(r'\b^[0-9]+.[0-9]+.[0-9]+.[0-9]+ - '
+                         r'\[[0-9]+-[0-9]+-[0-9]+ '
+                         r'[0-9]+:[0-9]+:[0-9]+.[0-9]+\] '
+                         r'"GET \/projects\/260 HTTP\/1.1" '
+                         r'(200|301|400|401|403|404|405|500) ([0-9]+)$\b')
+
+    match = pattern.search(input_line)
+    if not match:
+        return (None)
+
+    data['status_code'] = int(match.group(1))
+    data['file_size'] = int(match.group(2))
+    return (data)
 
 
 def main():
-    metrics = {'total_size': 0,
-               'status_codes': {
-                   "200": 0,
-                   "301": 0,
-                   "400": 0,
-                   "401": 0,
-                   "403": 0,
-                   "404": 0,
-                   "405": 0,
-                   "500": 0,
-               }
-               }
-    line_count = 0
+    """ Main Function """
+    total_size = 0
+    status_codes = {
+                200: 0,
+                301: 0,
+                400: 0,
+                401: 0,
+                403: 0,
+                404: 0,
+                405: 0,
+                500: 0
+            }
+    counter = 0
 
     try:
         for line in sys.stdin:
-            process_line(line.strip(), metrics)
-            line_count += 1
+            data = match_input(line)
+            counter += 1
 
-            # Print metrics after every 10 lines
-            if line_count % 10 == 0:
-                print_metrics(metrics)
-                # metrics = {'total_size': 0, 'status_codes': {}}
+            if not data:
+                continue
 
+            status_code = data['status_code']
+
+            if status_code not in status_codes:
+                continue
+
+            total_size += data['file_size']
+            status_codes[status_code] += 1
+
+            if counter % 10 == 0:
+                print_status(total_size, status_codes)
+        print_status(total_size, status_codes)
     except KeyboardInterrupt:
-        # Handle keyboard interruption (CTRL + C)
-        print_metrics(metrics)
-        sys.exit(0)
+        print_status(total_size, status_codes)
+        raise
 
 
 if __name__ == "__main__":
