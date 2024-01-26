@@ -47,7 +47,7 @@ try:
 
                     total_size += file_size
             except (IndexError, ValueError, TypeError):
-                continue
+                pass
 
         counter += 1
         if counter == 10:
