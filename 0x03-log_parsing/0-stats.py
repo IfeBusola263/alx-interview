@@ -46,17 +46,14 @@ try:
                         status_code) + 1
 
                     total_size += file_size
-            except (IndexError):
-                continue
-            except (ValueError):
-                continue
-            except (TypeError):
+            except (IndexError, ValueError, TypeError):
                 continue
 
         counter += 1
         if counter == 10:
             printer()
             counter = 0
+
 except KeyboardInterrupt:
     printer()
     raise
