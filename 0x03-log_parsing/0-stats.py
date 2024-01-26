@@ -21,13 +21,13 @@ counter_dict = {
 total_size = 0
 
 
-def printer(count_dict, size):
+def printer():
     '''
     This function prints the output of
     the statistics accumulated.
     '''
-    print(f"File size: {size}")
-    for status, numReq in count_dict.items():
+    print(f"File size: {total_size}")
+    for status, numReq in counter_dict.items():
         if numReq > 0:
             print(f"{status}: {numReq}")
 
@@ -35,20 +35,28 @@ def printer(count_dict, size):
 try:
     for line in sys.stdin:
         line_tup = line.split()
-        # if len(line_tup) == 9:
-        try:
-            status_code = line_tup[7]
-            file_size = int(line_tup[8])
-            if status_code in counter_dict.keys():
-                counter_dict[status_code] = counter_dict.get(
-                    status_code) + 1
-            total_size += file_size
-            counter += 1
-        except (IndexError, ValueError, TypeError):
-            continue
+
+        if len(line_tup) == 9:
+            try:
+                status_code = line_tup[7]
+                file_size = int(line_tup[8])
+
+                if status_code in counter_dict.keys():
+                    counter_dict[status_code] = counter_dict.get(
+                        status_code) + 1
+
+                    total_size += file_size
+            except (IndexError):
+                continue
+            except (ValueError):
+                continue
+            except (TypeError):
+                continue
+
+        counter += 1
         if counter == 10:
-            printer(counter_dict, total_size)
+            printer()
             counter = 0
 except KeyboardInterrupt:
-    printer(counter_dict, total_size)
+    printer()
     raise
