@@ -39,20 +39,17 @@ try:
 
         # if len(line_tup) == 9:
         try:
-            file_size = int(line_tup[-1])
-            total_size += file_size
-        except (IndexError, ValueError, TypeError):
-            continue
+            status_code = line_tup[7]
+            file_size = int(line_tup[8])
 
-        try:
-            status_code = line_tup[-2]
             if status_code in counter_dict.keys():
                 counter_dict[status_code] = counter_dict.get(
                     status_code) + 1
-            else:
-                continue
+
+                total_size += file_size
         except (IndexError, ValueError, TypeError):
             continue
+
 
         if counter == 10:
             printer()
