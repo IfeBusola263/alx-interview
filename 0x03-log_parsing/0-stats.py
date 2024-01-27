@@ -57,7 +57,7 @@ try:
         if counter == 10:
             printer()
             counter = 0
-        printer()
+    printer()
 except KeyboardInterrupt:
     printer()
     raise
