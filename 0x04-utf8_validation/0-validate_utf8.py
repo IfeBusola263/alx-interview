@@ -13,6 +13,9 @@ Using specific criteria to validate like:
 
 
 def validUTF8(data):
+    """
+    This function tests for a valid UTF-8 sequence.
+    """
     # Step 1: Iterate through the data
     i = 0
     while i < len(data):
