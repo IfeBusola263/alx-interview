@@ -1,1 +1,0 @@
-## Interview Trivia on Pascal's Triangle
