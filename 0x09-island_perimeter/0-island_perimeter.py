@@ -22,26 +22,12 @@ def island_perimeter(grid):
 
     if grid and isinstance(grid, list):
         height = 0
-        firstOccur = 0
-        lastOccur = 0
-        flag = 0
+        width = 0
 
         for section in grid:
             if 1 in section:
                 height += 1
-                if flag == 0:
-                    firstOccur = section.index(1)
-                    lastOccur = len(section) - 1 - section[::-1].index(1)
-                    flag = 1
-                else:
-                    if firstOccur > section.index(1):
-                        firstOccur = section.index(1)
-                    if lastOccur < len(section) - 1 - section[::-1].index(1):
-                        lastOccur = len(section) - 1 - section[::-1].index(1)
-                # blockWidth = section.count(1)
-                # if blockWidth > width:
-                # width = blockWidth
-        if firstOccur == 0:
-            lastOccur += 1
-
-        return (height + lastOccur) * 2
+                blockWidth = section.count(1)
+                if blockWidth > width:
+                    width = blockWidth
+        return (height + width) * 2
