@@ -30,6 +30,7 @@ def island_perimeter(grid):
         #         blockWidth = section.count(1)
         #         if blockWidth > width:
         #             width = blockWidth
+        # return (height + width) * 2
 
         height = len(grid)
         width = len(grid[0]) if height > 0 else 0
@@ -38,11 +39,16 @@ def island_perimeter(grid):
 
         for i in range(height):
             for j in range(width):
+
+                # checking individual cells
                 if grid[i][j] == 1:
                     perimeter += 4
+
+                    # If the cell has a neighbor above a value of 1
                     if i > 0 and grid[i - 1][j] == 1:
                         perimeter -= 2
+
+                    # If the cell has a neighbor to the left a value of 1
                     if j > 0 and grid[i][j - 1] == 1:
                         perimeter -= 2
-        # return (height + width) * 2
         return perimeter
