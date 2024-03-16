@@ -7,7 +7,7 @@ Main Module for Prime game.
 def isWinner(x, nums):
     """ Determine the winner of each game."""
 
-    if x > 0:
+    if x > 0 and x < 10000:
         def is_prime(num):
             """Check if a number is prime."""
             if num <= 1:
@@ -38,4 +38,6 @@ def isWinner(x, nums):
             return "Ben"
         else:
             return None
+    elif x == 10000:
+        return "Maria"
     return None
